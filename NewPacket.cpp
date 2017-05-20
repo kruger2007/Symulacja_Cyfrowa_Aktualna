@@ -30,6 +30,10 @@ NewPacket::NewPacket(Wsystem *wsys, double lambda)
 void NewPacket::Execute()
 {
 	packet = new NetworkPacket(++packet_id,system->time_sys); // tworzenie nowego pakietu o wejœciu do systemu time_sys
+	++system->packet_amount; // zwiêkszenie iloœci pakietów w systemie
+	std::cout << "Pojawia sie nowy pakiet nr: " << system->packet_amount;
+
+
 
 
 

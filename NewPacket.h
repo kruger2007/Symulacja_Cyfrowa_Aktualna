@@ -14,10 +14,10 @@ class NewPacket :
 	int time;
 	NetworkPacket * packet;
     Wsystem *system; //wskaünik systemu bezprzewodowego
-	int packet_id;
-	GeneratorExpotentional *CPG_gen;
+	int packet_id; 
+	GeneratorExpotentional *CPG_gen; // wskaünik na generator czasu CGP
 	
-	GeneratorUniform *CTP_gen;
+	GeneratorUniform *CTP_gen; // wskaünik na generator czasu CTP
 
 
 

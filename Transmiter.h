@@ -1,6 +1,8 @@
 #pragma once
-//#include "NetworkPacket.h"
 #include <queue>
+#include "NetworkPacket.h"
+#include "GeneratorExpotentional.h"
+
 //#include "NewPacket.h"
 
 class Transmiter
@@ -14,8 +16,13 @@ public:
 	int CRP; // czas po którym stacja nadawcza sprawdza stan kana³u po losowym czasie R*CTPk
 	int R; // zmienna losowa o rozka³dzie jednostajnym w przedziale <0, 2^r -1)
 	//NetworkPacket *processed; // wskaŸnik na aktualnie obs³ugiwany pakiet
-//	std::queue<NetworkPacket> packet_list; // kolejka pakietów(bufor nadajnika)
-	int id;
+	std::queue<NetworkPacket> packet_list; // kolejka pakietów(bufor nadajnika)
+	int id; // numer identyfikacyjy nadajnika. 
+
+	GeneratorExpotentional *CPG_gen; // wskaŸnik na generator czasu CGP
+
+	GeneratorUniform *CTP_gen; // wskaŸnik na generator czasu CTP
+
 
 ////	NewPacket *TimeEventNewPacket;
 
