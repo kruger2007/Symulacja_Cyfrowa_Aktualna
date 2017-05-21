@@ -3,9 +3,10 @@
 #include <cmath>
 
 
-GeneratorExpotentional::GeneratorExpotentional(const double lambda)
+GeneratorExpotentional::GeneratorExpotentional(const double lambdaa)
 {
 	uniform = new GeneratorUniform(0,1);
+	lambda = lambdaa;
 }
 
 GeneratorExpotentional::~GeneratorExpotentional()

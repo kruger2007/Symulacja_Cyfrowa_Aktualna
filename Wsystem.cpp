@@ -18,11 +18,11 @@ Wsystem::Wsystem()
 	pacekt_out_system = 0;
 	packet_into_system = 0;
 
-	for (int i = 0; i<kTransmiter_Amount; ++i) // tworzenie wektora nadajnikow
+	for (int i = 0; i<=kTransmiter_Amount; ++i) // tworzenie wektora nadajnikow
 	{
 				Transmiters.push_back(new Transmiter(i));
 	}
-	for (int i = 0; i<kReciver_Amount; ++i) // tworzenie wektora odbiornikow
+	for (int i = 0; i<=kReciver_Amount; ++i) // tworzenie wektora odbiornikow
 	{
 		Recivers.push_back(new Reciver(i));
 	}

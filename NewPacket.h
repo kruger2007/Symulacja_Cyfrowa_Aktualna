@@ -11,7 +11,7 @@ class NewPacket :
 	public Time_events
 	
 {
-	int time;						  //Czas kolejnego zg≥oszenia
+						  //Czas kolejnego zg≥oszenia
 	NetworkPacket * packet;
     Wsystem *system;                  //wskaünik systemu bezprzewodowego
 	int packet_id; 
@@ -20,9 +20,9 @@ class NewPacket :
 	GeneratorUniform *CTP_gen;       //wskaünik na generator czasu CTP
 
 
-
 public:
 	//NetworkPacket * Execute();
+	int time[11];
 	NewPacket(Wsystem *wsys,double lambda);
 	void Execute(int i);
 	

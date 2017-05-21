@@ -20,7 +20,10 @@ NewPacket::NewPacket(Wsystem *wsys, double lambda)
 	packet = nullptr; 
 	packet_id = 0;
 	CTP_gen = new GeneratorUniform(1, 10 + 1);                                   // generator liczb jednostajnych w przedzialne 1-10ms
-	time = 0;
+	for(int i=1;i<=10;++i)
+	{
+		time[i] = 0;
+	}
 	system = wsys;
 
 
@@ -35,8 +38,8 @@ void NewPacket::Execute(int i)
 	packet->czas_ctp = int(system->Transmiters[i]->CTP_gen->generate());         // generowanie pakietu wykorzystuj¹c generator danego nadajnika
 	std::cout << "Pojawia sie nowy pakiet nr: " << system->packet_amount << " na nadajniku nr " << i << std::endl;
 	system->Transmiters[i]->packet_list.push(packet);                            // umieszczenie wygenerowanego pakietu w buf. nadajnika[i],
-	time = system->time_sys + int(system->Transmiters[i]->CPG_gen->execute());   // Planowanie kolejnego zg³oszenia
-	std::cout << "wylosowane CPG " << time << std::endl;
+	time[i] = system->time_sys + int(system->Transmiters[i]->CPG_gen->execute());   // Planowanie kolejnego zg³oszenia
+	std::cout << "wylosowane CPG " << time[i] << std::endl;
 	packet = nullptr;                                                            // Zerowanie wskaŸnika
 
 }

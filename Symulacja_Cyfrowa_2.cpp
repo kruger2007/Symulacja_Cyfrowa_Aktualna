@@ -11,15 +11,15 @@
 #include "NewPacket.h"
 
 
-int SIM_TIME = 0;         // dlugosc symulacji
+int SIM_TIME = 100;         // dlugosc symulacji
 int START_PHASE = 0;
-auto MODE = 0;            //tryb krokowy 1  lub ci¹g³y 0  
+auto MODE = 1;            //tryb krokowy 1  lub ci¹g³y 0  
 
 void read_param()        // zczytywanie parametów symulacji
 {
 	std::cout << "Podaj dlugosc symulacji w sekundach" << std::endl;
 	std::cin >> SIM_TIME;
-	SIM_TIME *= 10000;   // zmiana na 1/10 ms 
+	SIM_TIME *= 1000;   // zmiana na 1 ms 
 	std::cout << "Podaj czas fazy poczatkowej " << std::endl;
 	std::cin >> START_PHASE;
 	do {
@@ -38,6 +38,8 @@ int main()
 	int iteracja = 0;
 	const double CSC = 0.001;
 	auto event_trig = 0;        //flaga wyst¹pienia zdarzenia
+
+
 	
 
 	
@@ -50,20 +52,28 @@ int main()
 	}
 	                                    //G³ówna pêtla symulacyjna//
 	///////////////////////Inicjalizacja ///////////////////////
-	//	read_param(); // zczytywanie parametrów symulacji (czas symulacji, d³. fazy pocz¹tkowej, tryb krokowy lub ci¹g³y)
+	//	read_param();                  // zczytywanie parametrów symulacji (czas symulacji, d³. fazy pocz¹tkowej, tryb krokowy lub ci¹g³y)
 		Wsystem *system_bezprzewodowy = new Wsystem(); // tworzymy system bezprzewodowy
-		//Utworzenie  zdarzeñ czasowych i warunkowych///
+		                               //Utworzenie  zdarzeñ czasowych i warunkowych///
 
-		NewPacket *new_packet = new NewPacket(system_bezprzewodowy,LAMBDA); // Zd. czasowe: pojawienie siê pakietu
-		new_packet->Execute(5);
-
-		//event_list.push_back(new Event(Ts.getSystemTime()));
+		NewPacket *time_event_new_packet = new NewPacket(system_bezprzewodowy,LAMBDA); // Zd. czasowe: pojawienie siê pakietu
+	
+		                               //event_list.push_back(new Event(Ts.getSystemTime()));
+		time_event_new_packet->Execute(1); // wymuszenie pojawienia sie na pierwszym nadajniku pakietu 
 
 		while(time < SIM_TIME) {
 			system_bezprzewodowy->time_sys = time; // przekazujemy czas symulacji do klasy WSystem
-			if (event_trig == 1) event_trig = 0; //zerujemy flagê 
+			if (event_trig == 1) { event_trig = 0; } //zerujemy flagê 
 		// Przegl¹damy zdarzenia czasowe
-				//pojawienie siê nowego pakietu w ka¿dym z 10 odbiorników
+				//sprawdzamy pojawienie siê nowego pakietu w ka¿dym z 10 odbiorników
+			for (auto i = 1; i <= 10; ++i)
+			{
+				if (time_event_new_packet->time[i] == time)
+				{
+					event_trig = 1;
+					time_event_new_packet->Execute(i);
+				}
+			}
 
 //			system_bezprzewodowy->Packets.push_back(system_bezprzewodowy->nowy_pakiet->Execute()); // pojawienie sie nowego pakietu.
 		// Przegl¹damy zdarzenia warunkowe
@@ -73,12 +83,14 @@ int main()
 			if(MODE==1)  { system("pause"); }
 			if(event_trig == 0 )
 			{
-				SIM_TIME += 10; // 1 ms kolejna szczelina czasowa
+				time += 1; // 1 ms kolejna szczelina czasowa
+				std::cout << "Czas symulacji " << time << std::endl;
 			}
 			}
 			
 			
 	delete system_bezprzewodowy;
+	delete time_event_new_packet;
 	system("pause");
     return 0;
 }
