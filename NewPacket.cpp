@@ -3,7 +3,7 @@
 #include <iostream>
 #include "NetworkPacket.h"
 
-//Klasa tworzy nowy pakiet i zwraca wskaŸnik do klasy przez ni¹ wywo³anej
+//Klasa tworzy nowy pakiet i zwraca wskaŸnik do klasy przez ni¹ wywo³anej//
 
 /*NetworkPacket * NewPacket::Execute()
 {
@@ -16,26 +16,28 @@
 
 NewPacket::NewPacket(Wsystem *wsys, double lambda)
 {
-	CPG_gen = new GeneratorExpotentional(LAMBDA); // zmienna losowa o rozk³adzie wyk³adniczym o intensywnoœci Lambda
+	CPG_gen = new GeneratorExpotentional(LAMBDA);                                // zmienna losowa o rozk³adzie wyk³adniczym o intensywnoœci Lambda
 	packet = nullptr; 
 	packet_id = 0;
-	CTP_gen = new GeneratorUniform(1, 10 + 1); // zmienna losowa o rozk³adzie jednostajny w przedzialne 1-10ms
+	CTP_gen = new GeneratorUniform(1, 10 + 1);                                   // generator liczb jednostajnych w przedzialne 1-10ms
 	time = 0;
+	system = wsys;
 
 
 
 	
 }
 
-void NewPacket::Execute()
+void NewPacket::Execute(int i)
 {
-	packet = new NetworkPacket(++packet_id,system->time_sys); // tworzenie nowego pakietu o wejœciu do systemu time_sys
-	++system->packet_amount; // zwiêkszenie iloœci pakietów w systemie
-	std::cout << "Pojawia sie nowy pakiet nr: " << system->packet_amount;
-
-
-
-
+	packet = new NetworkPacket(++packet_id,system->time_sys);                    // tworzenie nowego pakietu o wejœciu do systemu, time_sys
+	++system->packet_amount;                                                     // zwiêkszenie iloœci pakietów w systemie
+	packet->czas_ctp = int(system->Transmiters[i]->CTP_gen->generate());         // generowanie pakietu wykorzystuj¹c generator danego nadajnika
+	std::cout << "Pojawia sie nowy pakiet nr: " << system->packet_amount << " na nadajniku nr " << i << std::endl;
+	system->Transmiters[i]->packet_list.push(packet);                            // umieszczenie wygenerowanego pakietu w buf. nadajnika[i],
+	time = system->time_sys + int(system->Transmiters[i]->CPG_gen->execute());   // Planowanie kolejnego zg³oszenia
+	std::cout << "wylosowane CPG " << time << std::endl;
+	packet = nullptr;                                                            // Zerowanie wskaŸnika
 
 }
 

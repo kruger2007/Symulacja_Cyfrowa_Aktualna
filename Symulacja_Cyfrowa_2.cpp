@@ -11,15 +11,15 @@
 #include "NewPacket.h"
 
 
-int SIM_TIME = 0; // dlugosc symulacji
+int SIM_TIME = 0;         // dlugosc symulacji
 int START_PHASE = 0;
-auto MODE = 0; //tryb krokowy 1  lub ci¹g³y 0  
+auto MODE = 0;            //tryb krokowy 1  lub ci¹g³y 0  
 
-void read_param() // zczytywanie parametów symulacji
+void read_param()        // zczytywanie parametów symulacji
 {
 	std::cout << "Podaj dlugosc symulacji w sekundach" << std::endl;
 	std::cin >> SIM_TIME;
-	SIM_TIME *= 10000; // zmiana na 1/10 ms 
+	SIM_TIME *= 10000;   // zmiana na 1/10 ms 
 	std::cout << "Podaj czas fazy poczatkowej " << std::endl;
 	std::cin >> START_PHASE;
 	do {
@@ -33,11 +33,11 @@ int main()
 {
 	srand(time(nullptr));
 	remove("Symulation.txt");
-	auto time = 0; // zmienna czasowa w systemie 
+	auto time = 0;               // zmienna czasowa w systemie 
 	int ilosc_pakietow = 0;
 	int iteracja = 0;
 	const double CSC = 0.001;
-	auto event_trig = 0; //flaga wyst¹pienia zdarzenia
+	auto event_trig = 0;        //flaga wyst¹pienia zdarzenia
 	
 
 	
@@ -48,12 +48,14 @@ int main()
 		file << "================================== Symulation START ==================================" << std::endl;
 		file.flush();
 	}
-	//G³ówna pêtla symulacyjna
+	                                    //G³ówna pêtla symulacyjna//
 	///////////////////////Inicjalizacja ///////////////////////
-		read_param(); // zczytywanie parametrów symulacji (czas symulacji, d³. fazy pocz¹tkowej, tryb krokowy lub ci¹g³y)
+	//	read_param(); // zczytywanie parametrów symulacji (czas symulacji, d³. fazy pocz¹tkowej, tryb krokowy lub ci¹g³y)
 		Wsystem *system_bezprzewodowy = new Wsystem(); // tworzymy system bezprzewodowy
 		//Utworzenie  zdarzeñ czasowych i warunkowych///
-		NewPacket *nowy_pakiet = new NewPacket(system_bezprzewodowy,LAMBDA);
+
+		NewPacket *new_packet = new NewPacket(system_bezprzewodowy,LAMBDA); // Zd. czasowe: pojawienie siê pakietu
+		new_packet->Execute(5);
 
 		//event_list.push_back(new Event(Ts.getSystemTime()));
 
@@ -62,6 +64,7 @@ int main()
 			if (event_trig == 1) event_trig = 0; //zerujemy flagê 
 		// Przegl¹damy zdarzenia czasowe
 				//pojawienie siê nowego pakietu w ka¿dym z 10 odbiorników
+
 //			system_bezprzewodowy->Packets.push_back(system_bezprzewodowy->nowy_pakiet->Execute()); // pojawienie sie nowego pakietu.
 		// Przegl¹damy zdarzenia warunkowe
 		
